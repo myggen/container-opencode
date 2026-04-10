@@ -7,8 +7,8 @@ NVM_VERSION="v0.40.4"
 # Python MCP server library
 MCP_VERSION=1.26
 
-# Enable websearch in OpenCode
-export OPENCODE_ENABLE_EXA=1
+# Enable by passing environment variable on start
+#export OPENCODE_ENABLE_EXA=1
 
 # Set editor for subprocesses
 export EDITOR=vim

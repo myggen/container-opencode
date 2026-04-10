@@ -38,12 +38,25 @@ podman build --no-cache --build-arg OPENCODE_VERSION=v1.2.3 -t opencode:v1.2.3 .
 | `INSTALL_SOURCE` | *(empty)* | Set to `local` to install from a `.deb` in the build context instead of downloading. |
 | `OPENCODE_VERSION` | `latest` | GitHub release tag to download (e.g. `v1.2.3`). Ignored when `INSTALL_SOURCE=local`. |
 
+If you want to enable Exa web tools at runtime, add `-e OPENCODE_ENABLE_EXA=1` to your `podman run` command.
+
 ## Usage
 
 Run directly (interactive):
 
 ```bash
 podman run --rm --userns=keep-id -ti \
+  -v opencode:/home/opencode \
+  -v "$PWD":/work \
+  -v "$HOME"/.gitconfig:/home/opencode/.gitconfig \
+  opencode:latest
+```
+
+With Exa enabled:
+
+```bash
+podman run --rm --userns=keep-id -ti \
+  -e OPENCODE_ENABLE_EXA=1 \
   -v opencode:/home/opencode \
   -v "$PWD":/work \
   -v "$HOME"/.gitconfig:/home/opencode/.gitconfig \
