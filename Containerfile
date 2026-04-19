@@ -84,8 +84,9 @@ RUN pipx install --global -q uv~=$UV_VERSION && \
 
 # Working directory and volumes exposed by the image
 WORKDIR /work
+RUN ls -l /home/opencode
 VOLUME ["/work", "/home/opencode"]
 
 # Execute shell as default
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["opencode"]
+CMD ["ls", "-la", "/home/opencode"]
