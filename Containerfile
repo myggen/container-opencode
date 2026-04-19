@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     LC_ALL=nb_NO.UTF-8 \
     HOME=/home/opencode \
     PATH="/usr/local/bin:$PATH" \
-    NVM_DIR=/usr/local/lib/nvm \
+    NVM_DIR=/home/opencode/.local/lib/nvm \
     TERM=xterm-256color \
     EDITOR=vim
 
@@ -66,21 +66,8 @@ RUN apt-get update && \
     echo "alias ls='ls --color=auto'" >> /etc/bash.bashrc && \
     echo "alias grep='grep --color=auto'" >> /etc/bash.bashrc
 
-RUN mkdir -p "$NVM_DIR" && \
-    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | PROFILE=/etc/bash.bashrc bash && \
-    bash -c 'source "$NVM_DIR/nvm.sh" \
-        && nvm install --lts \
-        && npm i -g "opencode-ai@$OPENCODE_VERSION" "@biomejs/biome@$BIOME_VERSION" \
-        && NODE_BIN="$(dirname "$(nvm which current)")" \
-        && ln -sf "$NODE_BIN/node"     /usr/local/bin/node \
-        && ln -sf "$NODE_BIN/npm"      /usr/local/bin/npm \
-        && ln -sf "$NODE_BIN/npx"      /usr/local/bin/npx \
-        && ln -sf "$NODE_BIN/opencode" /usr/local/bin/opencode \
-        && ln -sf "$NODE_BIN/biome"    /usr/local/bin/biome'
-
-RUN pipx install --global -q uv~=$UV_VERSION && \
-    pipx install --global -q pipenv~=$PIPENV_VERSION && \
-    pipx install --global -q ruff~=$RUFF_VERSION
+# Init script
+ADD container-init.sh /
 
 # Working directory and volumes exposed by the image
 WORKDIR /work
@@ -88,5 +75,5 @@ RUN ls -l /home/opencode
 VOLUME ["/work", "/home/opencode"]
 
 # Execute shell as default
-ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["ls", "-la", "/home/opencode"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/container-init.sh"]
+CMD ["opencode"]
