@@ -87,10 +87,8 @@ RUN apt-get update && \
       man-db \
       nano \
       openssh-client \
-      pipenv \
+      pipx \
       procps \
-      python3-pip \
-      python3-wheel \
       ripgrep \
       rsync \
       shfmt \

@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-# NVM verison to use for installing NPM latest
-NVM_VERSION="v0.40.4"
-
-# Python MCP server library
-MCP_VERSION=1.26
+# Software versions
+NVM_VERSION=v0.40.4
+UV_VERSION=0.11.7
+PIPENV_VERSION=2026.5.2
+RUFF_VERSION=0.15.11
 
 # Enable by passing environment variable on start
 #export OPENCODE_ENABLE_EXA=1
@@ -60,11 +60,15 @@ rsync -ur /etc/skel/. "$HOME"/
 # Download and install NVM, and fetch NPM LTS
 [[ -d "$HOME/.nvm" ]] || install_nvm
 
-# Installer siste versjon av UV
-install_if_missing "$HOME/.local/bin/uv" curl -LsSf https://astral.sh/uv/install.sh | sh
+# Install uv, https://github.com/astral-sh/uv
+which "$HOME/.local/bin/uv" &> /dev/null || pipx install -q uv~=$UV_VERSION
 
-# Instal Python MCP library if we find .mcp
-test -f .mcp && PIPENV_VENV_IN_PROJECT=1 pipenv install mcp~=${MCP_VERSION}
+# Install pipenv
+which "$HOME/.local/bin/pipenv" &> /dev/null || pipx install -q pipenv~=$PIPENV_VERSION
+
+# Install python ruff
+which "$HOME/.local/bin/ruff" &> /dev/null || pipx install -q ruff~=$RUFF_VERSION
+
 
 # Default TMUX config
 test -f $HOME/.tmux.conf || cat <<'EOF' >$HOME/.tmux.conf
