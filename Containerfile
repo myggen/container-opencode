@@ -33,6 +33,7 @@ RUN apt-get update && \
       ca-certificates \
       curl \
       git \
+      golang \
       gnupg \
       iputils-ping \
       jq \
