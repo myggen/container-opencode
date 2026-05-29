@@ -33,8 +33,9 @@ RUN apt-get update && \
       ca-certificates \
       curl \
       git \
-      golang \
       gnupg \
+      golang \
+      govulncheck \
       iputils-ping \
       jq \
       less \
