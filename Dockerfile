@@ -101,6 +101,8 @@ RUN apt-get update && \
       xdg-utils \
       # MIT-SHM / shared memory helpers for X11
       libxshmfence1 \
+      inetutils-telnet \
+      net-tools \
       && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
